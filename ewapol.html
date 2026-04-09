@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EWA POL – Substraty Torfowe HAWITA</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --g:#3e6b00;--gd:#2a4d00;--gl:#e9f3d4;--ga:#78a81e;
+  --cream:#f7f5ef;--cream2:#ede9df;--text:#181c14;--mid:#4a5040;
+  --muted:#7a8270;--border:#d8d4c8;--white:#ffffff;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',system-ui,sans-serif;color:var(--text);background:var(--white);line-height:1.6;font-size:15px;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+img{display:block;width:100%;height:100%;object-fit:cover}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideRight{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.anim-up{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.anim-up.visible{opacity:1;transform:translateY(0)}
+.anim-up-d1{transition-delay:.1s}.anim-up-d2{transition-delay:.2s}.anim-up-d3{transition-delay:.3s}
+.anim-up-d4{transition-delay:.4s}.anim-up-d5{transition-delay:.5s}
+.anim-left{opacity:0;transform:translateX(-24px);transition:opacity .6s ease,transform .6s ease}
+.anim-left.visible{opacity:1;transform:translateX(0)}
+
+nav{background:rgba(255,255,255,.97);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);transition:box-shadow .3s}
+nav.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.07)}
+.nav-inner{max-width:1240px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.logo-mark{width:34px;height:34px;background:var(--g);position:relative;flex-shrink:0;overflow:hidden}
+.logo-mark::after{content:'';position:absolute;width:0;height:0;border-left:17px solid transparent;border-right:17px solid transparent;border-bottom:22px solid rgba(255,255,255,.18);bottom:0;left:0}
+.logo-text{font-size:18px;font-weight:800;color:var(--gd);letter-spacing:.3px;line-height:1}
+.logo-sub{font-size:9.5px;font-weight:500;color:var(--muted);letter-spacing:2px;text-transform:uppercase;display:block;margin-top:2px}
+.nav-links{display:flex;list-style:none}
+.nav-links a{font-size:13.5px;font-weight:500;color:var(--mid);padding:8px 16px;display:block;position:relative;cursor:pointer;transition:color .2s}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:2px;background:var(--g);transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
+.nav-links a:hover{color:var(--gd)}.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+.nav-links a.active{color:var(--gd);font-weight:600}
+.nav-cta{background:var(--g);color:#fff;padding:9px 22px;font-size:13px;font-weight:600;cursor:pointer;border:none;letter-spacing:.3px;transition:all .2s;border-radius:3px}
+.nav-cta:hover{background:var(--gd);transform:translateY(-1px)}
+@media(max-width:860px){.nav-links{display:none}.nav-cta{display:none}}
+
+.page{display:none}.page.active{display:block;animation:pageIn .4s ease}
+
+.hero{background:#1c2e0a;color:#fff;display:grid;grid-template-columns:1fr 1fr;min-height:88vh;overflow:hidden;position:relative}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(78,130,0,.18) 0%,transparent 60%);pointer-events:none}
+.hero-content{padding:90px 60px 80px 80px;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--ga);margin-bottom:1.75rem;animation:slideRight .7s .1s both}
+.hero-eyebrow::before{content:'';width:28px;height:1.5px;background:var(--ga)}
+.hero h1{font-size:clamp(2.4rem,4.2vw,3.8rem);font-weight:800;line-height:1.08;margin-bottom:1.5rem;animation:fadeUp .8s .2s both;color:#f0f4e8}
+.hero h1 em{color:#a8d040;font-weight:300;font-style:italic;font-family:'Lora',serif}
+.hero-lead{font-size:16px;color:rgba(255,255,255,.55);line-height:1.8;max-width:440px;margin-bottom:2.5rem;font-weight:300;animation:fadeUp .8s .35s both}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;animation:fadeUp .8s .5s both}
+.btn-primary{background:var(--ga);color:#fff;padding:13px 28px;font-size:13.5px;font-weight:600;cursor:pointer;border:none;border-radius:3px;transition:all .2s;letter-spacing:.3px}
+.btn-primary:hover{background:#8fbb22;transform:translateY(-2px);box-shadow:0 8px 24px rgba(120,168,30,.3)}
+.btn-outline{background:transparent;color:rgba(255,255,255,.75);padding:12px 26px;font-size:13.5px;font-weight:500;cursor:pointer;border:1px solid rgba(255,255,255,.22);border-radius:3px;transition:all .2s}
+.btn-outline:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.45)}
+.hero-visual{position:relative;overflow:hidden}
+.hero-img-wrap{width:100%;height:100%;min-height:520px}
+.photo-slot{width:100%;height:100%;min-height:inherit;background:#1f3508;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.photo-slot svg{opacity:.22;width:36px;height:36px;fill:#fff}
+.photo-slot span{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.22)}
+.photo-slot small{font-size:9px;color:rgba(255,255,255,.14);letter-spacing:1px}
+.photo-slot-light{background:#e4e0d6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;width:100%;height:100%}
+.photo-slot-light svg{fill:#888;opacity:.45;width:32px;height:32px}
+.photo-slot-light span{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,0,0,.28)}
+.photo-slot-light small{font-size:9px;color:rgba(0,0,0,.18);letter-spacing:1px}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);background:#111f03;border-top:1px solid rgba(255,255,255,.05)}
+.hero-stat{padding:24px 28px;border-right:1px solid rgba(255,255,255,.05);text-align:center}
+.hero-stat:last-child{border-right:none}
+.hero-stat-num{font-size:1.9rem;font-weight:800;color:#a8d040;line-height:1}
+.hero-stat-label{font-size:10.5px;color:rgba(255,255,255,.35);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+@media(max-width:900px){.hero{grid-template-columns:1fr;min-height:auto}.hero-content{padding:60px 2rem}.hero-img-wrap{min-height:300px}.hero-stats{grid-template-columns:repeat(2,1fr)}}
+
+.partner-strip{background:var(--cream);border-top:3px solid var(--g);border-bottom:1px solid var(--border);padding:22px 2rem}
+.partner-strip-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.partner-badge{background:var(--gd);color:#fff;font-size:9.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;flex-shrink:0;border-radius:2px}
+.partner-strip p{font-size:13.5px;color:var(--mid);line-height:1.6}
+.partner-strip strong{color:var(--gd)}
+
+section{padding:90px 2rem}
+.container{max-width:1240px;margin:0 auto}
+.section-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--g);margin-bottom:.6rem}
+.section-title{font-size:clamp(1.75rem,3vw,2.6rem);font-weight:800;color:var(--text);margin-bottom:.75rem;line-height:1.15}
+.section-sub{font-size:15px;color:var(--muted);max-width:540px;line-height:1.75;margin-bottom:3.5rem;font-weight:400}
+
+.peat-hero{background:var(--cream);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.peat-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--border)}
+.peat-visual{position:relative;overflow:hidden;min-height:480px;background:#d4d0c4}
+.peat-info{background:var(--white);padding:60px 52px;display:flex;flex-direction:column;justify-content:center}
+.peat-info h2{font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:800;margin-bottom:1rem;line-height:1.2}
+.peat-info p{font-size:14.5px;color:var(--mid);line-height:1.8;margin-bottom:.9rem}
+.peat-specs{margin-top:1.75rem;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.peat-spec{padding:14px 16px;background:var(--cream);border-left:3px solid var(--g)}
+.peat-spec strong{display:block;font-size:13px;font-weight:700;color:var(--gd);margin-bottom:2px}
+.peat-spec span{font-size:12px;color:var(--muted)}
+.peat-badge{display:inline-flex;align-items:center;gap:6px;background:var(--gd);color:#fff;font-size:9.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;border-radius:2px;margin-bottom:1rem}
+.peat-badge-dot{width:6px;height:6px;background:var(--ga);border-radius:50%}
+@media(max-width:800px){.peat-grid{grid-template-columns:1fr}.peat-info{padding:36px 2rem}.peat-visual{min-height:260px;position:relative}}
+
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--border);border:1px solid var(--border)}
+@media(max-width:900px){.products-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:540px){.products-grid{grid-template-columns:1fr}}
+.product-card{background:var(--white);cursor:pointer;transition:all .3s;overflow:hidden;display:flex;flex-direction:column}
+.product-card:hover{z-index:2;box-shadow:0 12px 48px rgba(0,0,0,.12);transform:translateY(-3px);position:relative}
+.product-card-img{height:210px;overflow:hidden;position:relative;background:#e0ddd4}
+.product-card-img .photo-slot-light{position:absolute;inset:0;transition:transform .5s ease}
+.product-card:hover .product-card-img .photo-slot-light{transform:scale(1.06)}
+.product-card-body{padding:1.5rem 1.75rem 1.75rem;flex:1;display:flex;flex-direction:column}
+.product-label{font-size:9.5px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--g);margin-bottom:.5rem}
+.product-card h3{font-size:1.05rem;font-weight:700;margin-bottom:.5rem;color:var(--text);line-height:1.35;flex:1}
+.product-card p{font-size:13px;color:var(--muted);line-height:1.65}
+.product-link{display:inline-flex;align-items:center;gap:6px;margin-top:1.25rem;font-size:11.5px;font-weight:700;letter-spacing:.8px;color:var(--gd);text-transform:uppercase}
+.product-link-arrow{transition:transform .2s}
+.product-card:hover .product-link-arrow{transform:translateX(5px)}
+
+.why-section{background:var(--cream);border-top:1px solid var(--border)}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--border);border:1px solid var(--border)}
+@media(max-width:860px){.why-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:540px){.why-grid{grid-template-columns:1fr}}
+.why-item{background:var(--white);padding:2rem;transition:background .2s}
+.why-item:hover{background:#fafaf7}
+.why-num{font-size:2.2rem;font-weight:800;color:var(--cream2);line-height:1;margin-bottom:.75rem;transition:color .25s}
+.why-item:hover .why-num{color:var(--gl)}
+.why-divider{width:28px;height:2px;background:var(--ga);margin-bottom:.85rem}
+.why-item h4{font-size:14px;font-weight:700;margin-bottom:.45rem;color:var(--text)}
+.why-item p{font-size:13px;color:var(--muted);line-height:1.65}
+
+.about-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+@media(max-width:800px){.about-layout{grid-template-columns:1fr;gap:40px}}
+.about-image-stack{position:relative;height:500px}
+@media(max-width:800px){.about-image-stack{height:240px}}
+.about-img-main{position:absolute;top:0;left:0;right:56px;bottom:56px;overflow:hidden;background:#d0ccc0}
+.about-img-accent{position:absolute;bottom:0;right:0;width:52%;height:48%;overflow:hidden;background:var(--gd);border:5px solid var(--white)}
+.about-text p{font-size:14.5px;color:var(--mid);line-height:1.8;margin-bottom:.9rem}
+.data-table{width:100%;font-size:13px;border-collapse:collapse;margin-top:1.5rem}
+.data-table tr{border-bottom:1px solid var(--border)}
+.data-table td{padding:10px 0}.data-table td:first-child{color:var(--muted);width:44%}
+.data-table td:last-child{font-weight:600;color:var(--text);text-align:right}
+
+.cta-band{background:var(--gd);padding:80px 2rem;position:relative;overflow:hidden}
+.cta-band::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.1) 0%,transparent 60%)}
+.cta-band-inner{max-width:1240px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:2rem;flex-wrap:wrap;position:relative}
+.cta-band h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;color:#fff;max-width:500px;line-height:1.2}
+.cta-band h2 em{font-style:italic;font-family:'Lora',serif;color:#b8d84a;font-weight:400}
+.cta-band-info{font-size:13px;color:rgba(255,255,255,.42);margin-top:6px}
+
+.page-hero{background:#1c2e0a;color:#fff;padding:70px 2rem 60px}
+.page-hero-inner{max-width:1240px;margin:0 auto;animation:fadeUp .6s both}
+.page-hero h1{font-size:2.6rem;font-weight:800;color:#f0f4e8;margin-bottom:.4rem}
+.page-hero p{font-size:15px;color:rgba(255,255,255,.5);max-width:560px;line-height:1.7;font-weight:300}
+.filter-bar{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem;position:sticky;top:68px;z-index:50}
+.filter-inner{max-width:1240px;margin:0 auto;display:flex;overflow-x:auto}
+.filter-btn{padding:16px 20px;background:transparent;border:none;border-bottom:2px solid transparent;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap;font-family:'Outfit',sans-serif}
+.filter-btn:hover{color:var(--gd)}.filter-btn.active{color:var(--gd);border-bottom-color:var(--g);font-weight:700}
+.products-list{max-width:1240px;margin:0 auto;padding:3rem 2rem}
+.product-detail{display:grid;grid-template-columns:320px 1fr;border:1px solid var(--border);margin-bottom:2px;overflow:hidden;background:var(--white);transition:box-shadow .25s,transform .25s}
+.product-detail:hover{box-shadow:0 6px 32px rgba(0,0,0,.08);transform:translateY(-2px)}
+.product-detail-visual{overflow:hidden;position:relative;background:#ddd8cc;min-height:260px}
+.product-detail-visual .photo-slot-light{position:absolute;inset:0}
+.product-detail-info{padding:2.25rem 2.75rem}
+.product-detail-info .meta{font-size:9.5px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--g);margin-bottom:.65rem}
+.product-detail-info h2{font-size:1.45rem;font-weight:800;margin-bottom:.75rem;color:var(--text)}
+.product-detail-info p{font-size:13.5px;color:var(--mid);line-height:1.78;margin-bottom:.65rem}
+.product-variants{display:flex;flex-wrap:wrap;gap:7px;margin-top:1.25rem}
+.variant-tag{background:var(--cream);border:1px solid var(--border);color:var(--mid);padding:4px 13px;font-size:11.5px;font-weight:500;border-radius:2px;transition:all .2s;cursor:default}
+.variant-tag:hover{background:var(--gl);border-color:var(--ga);color:var(--gd)}
+@media(max-width:680px){.product-detail{grid-template-columns:1fr}.product-detail-visual{min-height:200px;position:relative}.product-detail-info{padding:1.5rem}}
+
+.factories-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0;background:var(--border);border:1px solid var(--border);margin-top:2.5rem}
+.factory-card{background:var(--white);padding:1.75rem;transition:background .2s}.factory-card:hover{background:var(--cream)}
+.factory-accent{width:28px;height:3px;background:var(--ga);margin-bottom:1.25rem}
+.factory-card h4{font-size:14px;font-weight:700;margin-bottom:.45rem;color:var(--gd)}
+.factory-card p{font-size:13px;color:var(--muted);line-height:1.6}
+
+.contact-layout{display:grid;grid-template-columns:1fr 1.5fr;gap:80px;align-items:start}
+@media(max-width:800px){.contact-layout{grid-template-columns:1fr}}
+.contact-item{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+.contact-item:first-of-type{border-top:1px solid var(--border)}
+.contact-icon-box{width:36px;height:36px;background:var(--cream);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;font-weight:600;color:var(--gd)}
+.contact-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.contact-value{font-size:14px;font-weight:600;color:var(--text)}
+.form-wrap{background:var(--cream);padding:2.5rem;border:1px solid var(--border)}
+.form-wrap h3{font-size:1.2rem;font-weight:800;margin-bottom:1.75rem;color:var(--text)}
+.form-group{margin-bottom:1.1rem}
+.form-group label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:11px 14px;border:1px solid var(--border);background:var(--white);font-size:14px;font-family:'Outfit',sans-serif;color:var(--text);outline:none;transition:border-color .2s;border-radius:0;-webkit-appearance:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--g)}
+.form-group textarea{resize:vertical;min-height:100px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.interest-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.interest-btn{padding:10px 13px;border:1px solid var(--border);background:var(--white);font-size:12.5px;font-weight:500;color:var(--mid);cursor:pointer;transition:all .2s;text-align:left;font-family:'Outfit',sans-serif;border-radius:0}
+.interest-btn:hover,.interest-btn.selected{background:var(--gd);border-color:var(--gd);color:#fff;font-weight:600}
+.submit-btn{width:100%;padding:13px;background:var(--gd);color:#fff;border:none;font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-top:.75rem;font-family:'Outfit',sans-serif;border-radius:0}
+.submit-btn:hover{background:var(--g);transform:translateY(-1px)}
+.form-success{display:none;text-align:center;padding:3rem 2rem}
+.form-success h3{font-size:1.2rem;font-weight:800;margin-bottom:.5rem;color:var(--gd)}
+.form-success p{font-size:14px;color:var(--muted)}
+.success-check{width:52px;height:52px;background:var(--gl);border:2px solid var(--ga);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;border-radius:50%}
+.map-slot{height:280px;background:var(--cream);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;margin-top:2rem}
+.map-slot span{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+
+footer{background:#101a03;color:rgba(255,255,255,.6);padding:60px 2rem 28px}
+.footer-inner{max-width:1240px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:44px;margin-bottom:3rem}
+@media(max-width:860px){.footer-grid{grid-template-columns:1fr 1fr;gap:28px}}
+.footer-brand{font-size:18px;font-weight:800;color:#fff;margin-bottom:.3rem}
+.footer-tagline{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:.9rem}
+.footer-desc{font-size:12.5px;color:rgba(255,255,255,.38);line-height:1.7}
+.footer-nip{margin-top:1rem;font-size:11px;color:rgba(255,255,255,.2)}
+.footer-col h4{font-size:9.5px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#a8d040;margin-bottom:1.1rem}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:7px;font-size:12.5px;color:rgba(255,255,255,.38);cursor:pointer;transition:color .2s}
+.footer-col li:hover{color:rgba(255,255,255,.75)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:1.5rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.footer-bottom p{font-size:11px;color:rgba(255,255,255,.25)}
+.scroll-top{position:fixed;bottom:24px;right:24px;width:40px;height:40px;background:var(--gd);color:#fff;border:none;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;z-index:200;opacity:0;pointer-events:none;border-radius:2px}
+.scroll-top.show{opacity:1;pointer-events:auto}.scroll-top:hover{background:var(--g);transform:translateY(-2px)}
+
+.ph-icon{fill:rgba(0,0,0,.32);width:30px;height:30px}
+.ph-icon-dark{fill:rgba(255,255,255,.22);width:30px;height:30px}
+.ph-label{font-size:10px;letter-spacing:2px;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+  <div class="nav-inner">
+    <div class="logo" onclick="showPage('home')">
+      <div class="logo-mark"></div>
+      <div>
+        <div class="logo-text">EWA POL</div>
+        <span class="logo-sub">HAWITA Polska</span>
+      </div>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a onclick="showPage('home')" data-page="home" class="active">Strona główna</a></li>
+      <li><a onclick="showPage('products')" data-page="products">Produkty</a></li>
+      <li><a onclick="showPage('about')" data-page="about">O nas</a></li>
+      <li><a onclick="showPage('contact')" data-page="contact">Kontakt</a></li>
+    </ul>
+    <button class="nav-cta" onclick="showPage('contact');scrollToForm()">Zapytaj o ofertę</button>
+  </div>
+</nav>
+
+<div id="page-home" class="page active">
+
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Oficjalny przedstawiciel HAWITA w Polsce</div>
+      <h1>Substraty<br>torfowe <em>najwyższej</em><br>jakości</h1>
+      <p class="hero-lead">Od 1995 roku dostarczamy produkty HAWITA Gruppe – wiodącego europejskiego producenta substratów torfowych, podłoży i akcesoriów ogrodniczych.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="showPage('products')">Przejrzyj produkty</button>
+        <button class="btn-outline" onclick="showPage('contact');scrollToForm()">Skontaktuj się</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-img-wrap">
+        <!-- ZDJĘ CIE: zdj1.jpg — panorama torfowiska lub zakładu HAWITA -->
+        <div class="photo-slot">
+          <svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg>
+          <span>zdj1.jpg</span><small>torfowisko / zakład HAWITA</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">1920</div><div class="hero-stat-label">Tradycja HAWITA</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">1995</div><div class="hero-stat-label">EWA POL w Polsce</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">5</div><div class="hero-stat-label">Linii produktowych</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">PL</div><div class="hero-stat-label">Obsługa po polsku</div></div>
+  </div>
+
+  <div class="partner-strip">
+    <div class="partner-strip-inner">
+      <div class="partner-badge">HAWITA Partner</div>
+      <p><strong>EWA POL</strong> jest oficjalnym przedstawicielem <strong>HAWITA Gruppe GmbH</strong> w Polsce. Substraty przygotowywane są z surowców najwyższej klasy w zakładach produkcyjnych w Niemczech i na Łotwie, dostarczane bezpośrednio do polskich ogrodników i producentów.</p>
+    </div>
+  </div>
+
+  <div class="peat-hero">
+    <div class="peat-grid">
+      <div class="peat-visual">
+        <!-- ZDJĘ CIE: zdj2.jpg — substraty Frühstorfer Erde, big-bag lub worki -->
+        <div class="photo-slot-light" style="position:absolute;inset:0">
+          <svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg>
+          <span>zdj2.jpg</span><small>substraty Frühstorfer Erde</small>
+        </div>
+      </div>
+      <div class="peat-info anim-up">
+        <div class="peat-badge"><div class="peat-badge-dot"></div>Główny produkt</div>
+        <div class="section-eyebrow">HAWITA Frühstorfer Erde</div>
+        <h2 class="section-title" style="margin-bottom:.75rem">Substraty &amp; Podłoża Torfowe</h2>
+        <p>Przez ponad 100 lat HAWITA doskonali produkcję substratów torfowych. Zakład <strong>HAWITA Archut</strong> w Lauterbach-Wallenrod produkuje słynne na całym świecie podłoża pod marką <strong>Frühstorfer Erde</strong> – uznane przez profesjonalnych ogrodników za synonim jakości.</p>
+        <p>Substraty HAWITA Flor z Vechty i Sauensiek dedykowane są producentom roślin ozdobnych i warzyw. Każda partia podlega rygorystycznej kontroli laboratoryjnej pH, EC, struktury i składu mineralnego.</p>
+        <div class="peat-specs">
+          <div class="peat-spec"><strong>Torf z Niemiec i Łotwy</strong><span>Kontrola jakości surowca</span></div>
+          <div class="peat-spec"><strong>Kontrola pH i EC</strong><span>Każda partia testowana</span></div>
+          <div class="peat-spec"><strong>Big-bag i worki 70L</strong><span>Dostawa na terenie PL</span></div>
+          <div class="peat-spec"><strong>Substraty specjalistyczne</strong><span>Dla każdego rodzaju uprawy</span></div>
+        </div>
+        <div style="margin-top:2rem">
+          <button class="btn-primary" onclick="showPage('products');filterProductsDirect('torf')">Zobacz substraty</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="container">
+      <div class="section-eyebrow anim-up">Pełna oferta</div>
+      <h2 class="section-title anim-up anim-up-d1">Pięć linii produktowych HAWITA</h2>
+      <p class="section-sub anim-up anim-up-d2">Kompleksowe rozwiązania dla profesjonalnego ogrodnictwa – od podłoży torfowych, przez korki ukorzeniające i doniczki, po sadzonki i nawozy.</p>
+      <div class="products-grid">
+        <div class="product-card anim-up anim-up-d1" onclick="showPage('products')">
+          <!-- zdj2.jpg -->
+          <div class="product-card-img"><div class="photo-slot-light" style="position:absolute;inset:0"><svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg><span>zdj2.jpg</span></div></div>
+          <div class="product-card-body">
+            <div class="peat-badge" style="margin-bottom:.65rem;font-size:9px"><div class="peat-badge-dot"></div>Główny produkt</div>
+            <div class="product-label">HAWITA Frühstorfer</div>
+            <h3>Substraty &amp; Podłoża Torfowe</h3>
+            <p>Premium podłoża torfowe dla producentów roślin ozdobnych, warzyw i kwiatów. Ponad 100 lat tradycji jakości.</p>
+            <div class="product-link">Szczegóły <span class="product-link-arrow">→</span></div>
+          </div>
+        </div>
+        <div class="product-card anim-up anim-up-d2" onclick="showPage('products')">
+          <!-- zdj3.jpg -->
+          <div class="product-card-img"><div class="photo-slot-light" style="position:absolute;inset:0"><svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg><span>zdj3.jpg</span></div></div>
+          <div class="product-card-body">
+            <div class="product-label">HAWITA Easypot</div>
+            <h3>Korki Torfowe do Ukorzeniania</h3>
+            <p>Gotowe korki torfowe do rozmnażania roślin ozdobnych, warzyw, owoców i drzewek. System wielokrotnego użytku.</p>
+            <div class="product-link">Szczegóły <span class="product-link-arrow">→</span></div>
+          </div>
+        </div>
+        <div class="product-card anim-up anim-up-d3" onclick="showPage('products')">
+          <!-- zdj4.jpg -->
+          <div class="product-card-img"><div class="photo-slot-light" style="position:absolute;inset:0"><svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg><span>zdj4.jpg</span></div></div>
+          <div class="product-card-body">
+            <div class="product-label">HAWITA Technoplant</div>
+            <h3>Doniczki &amp; Akcesoria</h3>
+            <p>Wyroby z tworzyw sztucznych – amfy, skrzynki balkonowe z systemem nawadniania dla profesjonalistów.</p>
+            <div class="product-link">Szczegóły <span class="product-link-arrow">→</span></div>
+          </div>
+        </div>
+        <div class="product-card anim-up anim-up-d4" onclick="showPage('products')">
+          <!-- zdj5.jpg -->
+          <div class="product-card-img"><div class="photo-slot-light" style="position:absolute;inset:0"><svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg><span>zdj5.jpg</span></div></div>
+          <div class="product-card-body">
+            <div class="product-label">PAC Elsner</div>
+            <h3>Sadzonki Pelargonii i Roślin Balkonowych</h3>
+            <p>Certyfikowane sadzonki od jednego z wiodących producentów w Europie.</p>
+            <div class="product-link">Szczegóły <span class="product-link-arrow">→</span></div>
+          </div>
+        </div>
+        <div class="product-card anim-up anim-up-d5" onclick="showPage('products')">
+          <!-- zdj6.jpg -->
+          <div class="product-card-img"><div class="photo-slot-light" style="position:absolute;inset:0"><svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg><span>zdj6.jpg</span></div></div>
+          <div class="product-card-body">
+            <div class="product-label">AICL</div>
+            <h3>Nawozy Ogrodnicze</h3>
+            <p>Profesjonalna linia nawozów do upraw ozdobnych i warzywnych na każdym etapie wzrostu.</p>
+            <div class="product-link">Szczegóły <span class="product-link-arrow">→</span></div>
+          </div>
+        </div>
+        <div style="background:var(--gd);padding:2.25rem;display:flex;flex-direction:column;justify-content:center;cursor:default">
+          <div class="section-eyebrow" style="color:#a8d040">Pełna gama</div>
+          <p style="font-size:1rem;font-weight:700;color:#fff;line-height:1.5;margin-bottom:1rem;margin-top:.4rem">Nie widzisz produktu, którego szukasz?</p>
+          <p style="font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:1.75rem">Mamy dostęp do pełnego katalogu HAWITA. Zapytaj o szczegóły.</p>
+          <button class="btn-primary" style="width:fit-content" onclick="showPage('contact');scrollToForm()">Zapytaj o ofertę</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="why-section">
+    <div class="container">
+      <div class="section-eyebrow anim-up">Dlaczego EWA POL</div>
+      <h2 class="section-title anim-up anim-up-d1">Twój partner w ogrodnictwie</h2>
+      <p class="section-sub anim-up anim-up-d2">Łączymy ponad sto lat tradycji HAWITA z lokalną obsługą i dogłębną znajomością polskiego rynku.</p>
+      <div class="why-grid">
+        <div class="why-item anim-up anim-up-d1"><div class="why-num">01</div><div class="why-divider"></div><h4>Wiodący producent europejski</h4><p>HAWITA to ponad 100 lat doświadczenia w produkcji substratów torfowych – marka rozpoznawana przez profesjonalnych ogrodników na całym świecie.</p></div>
+        <div class="why-item anim-up anim-up-d2"><div class="why-num">02</div><div class="why-divider"></div><h4>Polska obsługa, bezpośredni kontakt</h4><p>Umowy, faktury i doradztwo w języku polskim. Dostawa na terenie całej Polski, ze szczególną obsługą regionu dolnośląskiego.</p></div>
+        <div class="why-item anim-up anim-up-d3"><div class="why-num">03</div><div class="why-divider"></div><h4>Rygorystyczna kontrola jakości</h4><p>Torf z Niemiec i Łotwy. Każda partia posiada weryfikację laboratoryjną pH, EC, struktury i składu mineralnego.</p></div>
+        <div class="why-item anim-up anim-up-d4"><div class="why-num">04</div><div class="why-divider"></div><h4>Sprzedaż hurtowa</h4><p>Oferta dedykowana szkółkom, producentom roślin ozdobnych, centrom ogrodniczym i hurtowniom branżowym.</p></div>
+        <div class="why-item anim-up anim-up-d5"><div class="why-num">05</div><div class="why-divider"></div><h4>Długoterminowe relacje</h4><p>Współpracujemy z klientami od lat. Znamy ich potrzeby i dostosowujemy ofertę do wymagań konkretnej produkcji.</p></div>
+        <div class="why-item anim-up anim-up-d5"><div class="why-num">06</div><div class="why-divider"></div><h4>Jeden dostawca, pełny asortyment</h4><p>Podłoża, korki torfowe, doniczki, sadzonki i nawozy – wszystko od jednego zaufanego źródła.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="about-layout">
+        <div class="about-image-stack anim-left">
+          <div class="about-img-main">
+            <!-- ZDJĘ CIE: zdj7.jpg — centrum ogrodowe Wrocław / magazyn -->
+            <div class="photo-slot-light" style="position:absolute;inset:0">
+              <svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg>
+              <span>zdj7.jpg</span><small>centrum ogrodowe / magazyn</small>
+            </div>
+          </div>
+          <div class="about-img-accent">
+            <!-- ZDJĘ CIE: zdj8.jpg — detal torfu lub kontrola jakości -->
+            <div class="photo-slot" style="height:100%">
+              <svg viewBox="0 0 24 24" style="width:22px;height:22px"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg>
+              <span style="font-size:9px">zdj8.jpg</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-text anim-up anim-up-d2">
+          <div class="section-eyebrow">O firmie</div>
+          <h2 class="section-title">EWA POL – doświadczenie i pasja do ogrodnictwa</h2>
+          <p>Jesteśmy oficjalnym przedstawicielem grupy HAWITA w Polsce. Od 1995 roku dostarczamy substraty torfowe, podłoża ogrodnicze oraz akcesoria dla profesjonalnego ogrodnictwa i miłośników roślin.</p>
+          <p>Nasza siedziba mieści się w Smolcu (woj. dolnośląskie), a centrum ogrodowe działa przy ul. Giełdowej 12 we Wrocławiu.</p>
+          <table class="data-table">
+            <tr><td>Pełna nazwa</td><td>EWA POL Ewa Grabska</td></tr>
+            <tr><td>NIP</td><td>9111101418</td></tr>
+            <tr><td>Centrum ogrodowe</td><td>ul. Giełdowa 12, Wrocław</td></tr>
+            <tr><td>Działalność od</td><td>1995 (rej. 2017)</td></tr>
+          </table>
+          <div style="margin-top:1.75rem;display:flex;gap:12px;flex-wrap:wrap">
+            <button class="btn-primary" onclick="showPage('about')">O firmie</button>
+            <button class="btn-outline" style="border-color:var(--border);color:var(--gd);background:transparent" onclick="showPage('contact');scrollToForm()">Kontakt</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <div class="cta-band-inner">
+      <div>
+        <h2>Gotowy na <em>współpracę</em>?<br>Zapytaj o ofertę hurtowną.</h2>
+        <div class="cta-band-info">Odpowiadamy zazwyczaj w ciągu 1 dnia roboczego</div>
+      </div>
+      <button class="btn-primary" style="font-size:14px;padding:14px 36px" onclick="showPage('contact');scrollToForm()">Napisz do nas →</button>
+    </div>
+  </div>
+</div>
+
+<div id="page-products" class="page">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-eyebrow" style="color:#a8d040">Pełna oferta</div>
+      <h1>Nasze produkty</h1>
+      <p>Linia HAWITA oraz partnerów – dla profesjonalnego ogrodnictwa i pasjonatów roślin</p>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <div class="filter-inner">
+      <button class="filter-btn active" onclick="filterProducts('all',this)">Wszystkie</button>
+      <button class="filter-btn" id="filter-torf" onclick="filterProducts('torf',this)">Substraty &amp; Torf</button>
+      <button class="filter-btn" onclick="filterProducts('akcesoria',this)">Akcesoria</button>
+      <button class="filter-btn" onclick="filterProducts('sadzonki',this)">Sadzonki</button>
+      <button class="filter-btn" onclick="filterProducts('nawozy',this)">Nawozy</button>
+    </div>
+  </div>
+  <div class="products-list">
+    <div class="product-detail anim-up" data-category="torf">
+      <div class="product-detail-visual"><!-- zdj2.jpg --><div class="photo-slot-light"><svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg><span>zdj2.jpg</span></div></div>
+      <div class="product-detail-info">
+        <div class="peat-badge" style="margin-bottom:.85rem;font-size:9px"><div class="peat-badge-dot"></div>Główny produkt</div>
+        <div class="meta">HAWITA Frühstorfer Erde / HAWITA Flor</div>
+        <h2>Substraty Torfowe &amp; Podłoża</h2>
+        <p>Przez ponad 100 lat HAWITA doskonali produkcję substratów torfowych. Zakład HAWITA Archut w Lauterbach-Wallenrod produkuje słynne na całym świecie podłoża pod marką Frühstorfer Erde. HAWITA Flor w Vechcie i Sauensiek dedykuje podłoża producentom roślin ozdobnych i warzyw.</p>
+        <p>Substraty przygotowywane są z torfu z Niemiec i Łotwy. Każda partia podlega kontroli laboratoryjnej pH, EC, struktury i składu mineralnego.</p>
+        <div class="product-variants">
+          <span class="variant-tag">Podłoże uniwersalne</span><span class="variant-tag">Podłoże do roślin ozdobnych</span>
+          <span class="variant-tag">Podłoże do warzyw</span><span class="variant-tag">Torf do ukorzeniania</span>
+          <span class="variant-tag">Substraty specjalistyczne</span><span class="variant-tag">Big-bag i worki 70L</span>
+        </div>
+      </div>
+    </div>
+    <div class="product-detail anim-up anim-up-d1" data-category="torf">
+      <div class="product-detail-visual"><!-- zdj3.jpg --><div class="photo-slot-light"><svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg><span>zdj3.jpg</span></div></div>
+      <div class="product-detail-info">
+        <div class="meta">HAWITA Easypot – Künzelsau</div>
+        <h2>Korki Torfowe Easypot</h2>
+        <p>HAWITA Easypot produkuje gotowe korki torfowe do ukorzeniania, stosowane w ogrodnictwie i szkółkarstwie. System wielokrotnego użytku w wielu rozmiarach. Stosowany do rozmnażania roślin ozdobnych, warzyw, owoców, bylin i drzewek. Korki zapewniają optymalne warunki ukorzeniania: właściwą wilgotność, dostęp powietrza i odpowiednią strukturę torfu.</p>
+        <div class="product-variants">
+          <span class="variant-tag">Korki torfowe ø24mm</span><span class="variant-tag">Korki torfowe ø36mm</span>
+          <span class="variant-tag">Korki torfowe ø50mm</span><span class="variant-tag">Tace ukorzeniające</span>
+          <span class="variant-tag">System wielokrotnego użytku</span>
+        </div>
+      </div>
+    </div>
+    <div class="product-detail anim-up anim-up-d2" data-category="akcesoria">
+      <div class="product-detail-visual"><!-- zdj4.jpg --><div class="photo-slot-light"><svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg><span>zdj4.jpg</span></div></div>
+      <div class="product-detail-info">
+        <div class="meta">HAWITA Technoplant – Emstek</div>
+        <h2>Wyroby z Tworzyw Sztucznych</h2>
+        <p>HAWITA Technoplant w Emstek to producent wysokiej jakości wyrobów z tworzyw sztucznych dla profesjonalnego ogrodnictwa i prywatnych miłośników kwiatów. Oferta obejmuje skrzynki balkonowe z systemem nawadniania, amfy, doniczki i specjalistyczne pojemniki uprawowe.</p>
+        <div class="product-variants">
+          <span class="variant-tag">Amfy balkonowe z nawadnianiem</span><span class="variant-tag">Skrzynki balkonowe</span>
+          <span class="variant-tag">Doniczki uprawowe</span><span class="variant-tag">Pojemniki profesjonalne</span>
+        </div>
+      </div>
+    </div>
+    <div class="product-detail anim-up anim-up-d3" data-category="sadzonki">
+      <div class="product-detail-visual"><!-- zdj5.jpg --><div class="photo-slot-light"><svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg><span>zdj5.jpg</span></div></div>
+      <div class="product-detail-info">
+        <div class="meta">PAC Elsner</div>
+        <h2>Sadzonki Pelargonii i Roślin Balkonowych</h2>
+        <p>PAC Elsner to jeden z wiodących europejskich dostawców certyfikowanych sadzonek pelargonii i roślin balkonowych. Sadzonki odznaczają się doskonałym zdrowiem, jednolitością i gotowością do dalszej uprawy.</p>
+        <div class="product-variants">
+          <span class="variant-tag">Pelargonie balkonowe</span><span class="variant-tag">Pelargonie bluszczolistne</span>
+          <span class="variant-tag">Rośliny balkonowe mieszane</span><span class="variant-tag">Sadzonki certyfikowane</span>
+        </div>
+      </div>
+    </div>
+    <div class="product-detail anim-up anim-up-d4" data-category="nawozy">
+      <div class="product-detail-visual"><!-- zdj6.jpg --><div class="photo-slot-light"><svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg><span>zdj6.jpg</span></div></div>
+      <div class="product-detail-info">
+        <div class="meta">AICL</div>
+        <h2>Nawozy Ogrodnicze AICL</h2>
+        <p>Profesjonalna linia nawozów AICL dedykowana uprawom ozdobnym i warzywnym. Zapewniają optymalne odżywienie na każdym etapie wzrostu: od ukorzeniania, przez wegetację, aż po kwitnienie.</p>
+        <div class="product-variants">
+          <span class="variant-tag">Nawozy do roślin ozdobnych</span><span class="variant-tag">Nawozy do warzyw</span>
+          <span class="variant-tag">Nawozy startowe</span><span class="variant-tag">Nawozy do kwitnienia</span>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:3rem;padding:2rem 2.5rem;background:var(--cream);border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem">
+      <div><div class="section-eyebrow">Pełna gama HAWITA</div><p style="font-size:15px;color:var(--mid)">Nie widzisz produktu, którego szukasz? Zapytaj – mamy dostęp do pełnego katalogu.</p></div>
+      <button class="btn-primary" onclick="showPage('contact');scrollToForm()">Zapytaj o produkt →</button>
+    </div>
+  </div>
+</div>
+
+<div id="page-about" class="page">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-eyebrow" style="color:#a8d040">Oficjalny przedstawiciel HAWITA</div>
+      <h1>O EWA POL</h1>
+      <p>Pasja do ogrodnictwa i jakości substratów torfowych od 1995 roku</p>
+    </div>
+  </div>
+  <section>
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px" id="about-pg">
+        <div class="anim-up">
+          <div class="section-eyebrow">Nasza historia</div>
+          <h2 class="section-title">Ogrodnictwo to nasza pasja</h2>
+          <p style="font-size:14.5px;color:var(--mid);line-height:1.8;margin-bottom:.9rem">EWA POL Ewa Grabska to firma z siedzibą w Smolcu (woj. dolnośląskie), działająca jako oficjalny pośrednik i przedstawiciel grupy HAWITA. Centrum ogrodowe mieści się przy ul. Giełdowej 12 we Wrocławiu.</p>
+          <p style="font-size:14.5px;color:var(--mid);line-height:1.8;margin-bottom:.9rem">Specjalizujemy się w hurtowej sprzedaży substratów torfowych, podłoży ogrodniczych, akcesoriów i sadzonek. Obsługujemy producentow roślin, szkółki, centra ogrodnicze i hurtownie w całej Polsce.</p>
+          <p style="font-size:14.5px;color:var(--mid);line-height:1.8">Substraty HAWITA dostępne na polskim rynku od 1995 roku – produkowane z najlepszych surowców w zakładach w Niemczech i na Łotwie, spełniają najwyższe standardy europejskiego ogrodnictwa.</p>
+          <div style="margin-top:2rem;height:240px;background:var(--cream);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+            <svg viewBox="0 0 24 24" style="width:28px;height:28px;fill:#888;opacity:.4"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg>
+            <span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,0,0,.3)">zdj9.jpg</span>
+            <small style="font-size:9px;color:rgba(0,0,0,.18)">centrum ogrodowe / portret</small>
+          </div>
+        </div>
+        <div class="anim-up anim-up-d2">
+          <div class="section-eyebrow">Dane firmy</div>
+          <table class="data-table" style="margin-top:1rem">
+            <tr><td>Pełna nazwa</td><td>EWA POL EWA GRABSKA</td></tr>
+            <tr><td>NIP</td><td>9111101418</td></tr>
+            <tr><td>REGON</td><td>932967404</td></tr>
+            <tr><td>Adres rejestrowy</td><td>ul. Cześniowa 12, 55-080 Smolec</td></tr>
+            <tr><td>Centrum ogrodowe</td><td>ul. Giełdowa 12, Wrocław</td></tr>
+            <tr><td>Forma prawna</td><td>Działalność indywidualna</td></tr>
+            <tr><td>Działalność od</td><td>04.09.2017</td></tr>
+            <tr><td>Telefon</td><td>+48 601 850 980</td></tr>
+            <tr><td>E-mail</td><td>biuro@hawita.pl</td></tr>
+          </table>
+          <div style="margin-top:1.75rem"><button class="btn-primary" onclick="showPage('contact');scrollToForm()">Skontaktuj się</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section style="background:var(--cream);border-top:1px solid var(--border)">
+    <div class="container">
+      <div class="section-eyebrow anim-up">Zakłady HAWITA</div>
+      <h2 class="section-title anim-up anim-up-d1">Skąd pochodzi jakość</h2>
+      <p class="section-sub anim-up anim-up-d2">Pięć wyspecjalizowanych zakładów w Niemczech oraz obiekty na Łotwie – każdy odpowiedzialny za inną część oferty.</p>
+      <div style="height:240px;background:var(--cream2);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;margin-bottom:0">
+        <svg viewBox="0 0 24 24" style="width:28px;height:28px;fill:#888;opacity:.4"><path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 13.5l2.5 3 3.5-4.5 4.5 6H5l3.5-4.5z"/></svg>
+        <span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,0,0,.3)">zdj10.jpg</span>
+        <small style="font-size:9px;color:rgba(0,0,0,.18)">zakład produkcyjny HAWITA</small>
+      </div>
+      <div class="factories-grid">
+        <div class="factory-card anim-up anim-up-d1"><div class="factory-accent"></div><h4>Lauterbach-Wallenrod</h4><p>HAWITA Archut – produkcja substratów Frühstorfer Erde. Ponad 100 lat tradycji i rozpoznawalności na rynku europejskim.</p></div>
+        <div class="factory-card anim-up anim-up-d2"><div class="factory-accent"></div><h4>Vechta &amp; Sauensiek</h4><p>HAWITA Flor – podłoża dla producentów roślin ozdobnych i warzywnych. Nowoczesne linie technologiczne.</p></div>
+        <div class="factory-card anim-up anim-up-d3"><div class="factory-accent"></div><h4>Künzelsau</h4><p>HAWITA Easypot – korki torfowe do ukorzeniania dla ogrodnictwa i szkółkarstwa. Szeroki wybór rozmiarów.</p></div>
+        <div class="factory-card anim-up anim-up-d4"><div class="factory-accent"></div><h4>Emstek</h4><p>HAWITA Technoplant – wyroby z tworzyw sztucznych dla profesjonalnych ogrodników i pasjonatów.</p></div>
+        <div class="factory-card anim-up anim-up-d5"><div class="factory-accent"></div><h4>Łotwa</h4><p>Zakłady wydobycia i przetwórstwa torfu – zapewniają ciągłość dostaw surowca klasy premium przez cały rok.</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="page-contact" class="page">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <div class="section-eyebrow" style="color:#a8d040">Porozmawiajmy</div>
+      <h1>Kontakt</h1>
+      <p>Chętnie odpowiemy na pytania o ofertę, ceny hurtowe i możliwości współpracy</p>
+    </div>
+  </div>
+  <section>
+    <div class="container">
+      <div class="contact-layout">
+        <div class="anim-up">
+          <div class="section-eyebrow">Dane kontaktowe</div>
+          <h3 style="font-size:1.4rem;font-weight:800;margin-bottom:1.5rem;color:var(--text)">Jesteśmy do Twojej dyspozycji</h3>
+          <p style="font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:1.5rem">Oferujemy sprzedaż hurtowną substratów torfowych, akcesoriów i sadzonek. Zapraszamy do kontaktu telefonicznego, mailowego lub osobistego w centrum ogrodowym.</p>
+          <div class="contact-item"><div class="contact-icon-box">&#x25A1;</div><div><div class="contact-label">Centrum ogrodowe</div><div class="contact-value">ul. Giełdowa 12, Wrocław</div></div></div>
+          <div class="contact-item"><div class="contact-icon-box">&#x25A1;</div><div><div class="contact-label">Adres rejestrowy</div><div class="contact-value">ul. Cześniowa 12, 55-080 Smolec</div></div></div>
+          <div class="contact-item"><div class="contact-icon-box">T</div><div><div class="contact-label">Telefon</div><div class="contact-value">+48 601 850 980</div></div></div>
+          <div class="contact-item"><div class="contact-icon-box">@</div><div><div class="contact-label">E-mail biuro</div><div class="contact-value">biuro@hawita.pl</div></div></div>
+          <div class="contact-item"><div class="contact-icon-box">J</div><div><div class="contact-label">Kontakt osobisty – Janusz</div><div class="contact-value">janusz@hawita.pl</div></div></div>
+          <div style="margin-top:1.5rem;padding:1rem 1.25rem;background:var(--cream);border:1px solid var(--border)">
+            <div style="font-size:12px;font-weight:700;color:var(--gd);margin-bottom:2px">NIP: 9111101418</div>
+            <div style="font-size:11.5px;color:var(--muted)">EWA POL EWA GRABSKA &nbsp;|&nbsp; REGON: 932967404</div>
+          </div>
+          <div class="map-slot">
+            <svg viewBox="0 0 24 24" style="width:28px;height:28px;fill:#888;opacity:.4"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            <span>Google Maps embed</span>
+            <span style="font-size:9px;color:var(--muted)">ul. Giełdowa 12, Wrocław</span>
+          </div>
+        </div>
+        <div class="form-wrap anim-up anim-up-d2" id="formCard">
+          <h3>Napisz do nas</h3>
+          <div id="formFields">
+            <div class="form-group"><label>Imię i nazwisko / Firma *</label><input type="text" id="f-name" placeholder="Jan Kowalski / Ogrodnictwo XYZ"></div>
+            <div class="form-row">
+              <div class="form-group"><label>E-mail *</label><input type="email" id="f-email" placeholder="adres@firma.pl"></div>
+              <div class="form-group"><label>Telefon</label><input type="tel" id="f-phone" placeholder="+48 ..."></div>
+            </div>
+            <div class="form-group">
+              <label>Czym jesteś zainteresowany?</label>
+              <div class="interest-grid">
+                <div class="interest-btn" onclick="toggleInterest(this)">Substraty torfowe</div>
+                <div class="interest-btn" onclick="toggleInterest(this)">Doniczki / akcesoria</div>
+                <div class="interest-btn" onclick="toggleInterest(this)">Korki Easypot</div>
+                <div class="interest-btn" onclick="toggleInterest(this)">Sadzonki PAC Elsner</div>
+                <div class="interest-btn" onclick="toggleInterest(this)">Nawozy AICL</div>
+                <div class="interest-btn" onclick="toggleInterest(this)">Pytania ogólne</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Rodzaj zapytania</label>
+              <select id="f-type">
+                <option value="">Wybierz...</option>
+                <option value="zakup">Zapytanie o cenę hurtowną</option>
+                <option value="info">Pytanie o produkt</option>
+                <option value="wspolpraca">Stała współpraca</option>
+                <option value="proba">Zamówienie próbki</option>
+                <option value="inne">Inne</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Wiadomość</label><textarea id="f-msg" placeholder="Opisz swoje zapotrzebowanie – rodzaj produktu, szacunkowe ilości, termin..."></textarea></div>
+            <button class="submit-btn" onclick="submitForm()">Wyślij wiadomość</button>
+          </div>
+          <div class="form-success" id="formSuccess">
+            <div class="success-check"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gd)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <h3>Wiadomość wysłana</h3>
+            <p>Dziękujemy za kontakt. Odpiszemy w ciągu 1 dnia roboczego.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">EWA POL</div>
+        <div class="footer-tagline">HAWITA Gruppe Polska</div>
+        <p class="footer-desc">Oficjalny przedstawiciel HAWITA Gruppe GmbH w Polsce. Hurtowa sprzedaż substratów torfowych, podłoży ogrodniczych i akcesoriów od 1995 roku.</p>
+        <div class="footer-nip">NIP: 9111101418 &nbsp;|&nbsp; REGON: 932967404</div>
+      </div>
+      <div class="footer-col"><h4>Produkty</h4><ul>
+        <li onclick="showPage('products')">Substraty torfowe</li><li onclick="showPage('products')">Korki Easypot</li>
+        <li onclick="showPage('products')">Technoplant</li><li onclick="showPage('products')">PAC Elsner</li><li onclick="showPage('products')">Nawozy AICL</li>
+      </ul></div>
+      <div class="footer-col"><h4>Firma</h4><ul>
+        <li onclick="showPage('about')">O nas</li><li onclick="showPage('about')">Zakłady HAWITA</li><li onclick="showPage('contact')">Kontakt</li>
+      </ul></div>
+      <div class="footer-col"><h4>Kontakt</h4><ul>
+        <li>ul. Giełdowa 12, Wrocław</li><li>+48 601 850 980</li><li>biuro@hawita.pl</li><li>janusz@hawita.pl</li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 EWA POL Ewa Grabska. Wszelkie prawa zastrzeżone.</p>
+      <p>Przedstawiciel HAWITA Gruppe GmbH | Niemcy</p>
+    </div>
+  </div>
+</footer>
+
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+
+<script>
+function showPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a=>{a.classList.remove('active');if(a.dataset.page===p)a.classList.add('active')});
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(observeAnimations,120);
+}
+function scrollToForm(){setTimeout(()=>{const fc=document.getElementById('formCard');if(fc)fc.scrollIntoView({behavior:'smooth',block:'center'})},350)}
+function toggleInterest(el){el.classList.toggle('selected')}
+function filterProducts(cat,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.product-detail').forEach(p=>{p.style.display=(cat==='all'||p.dataset.category===cat)?'grid':'none'});
+}
+function filterProductsDirect(cat){
+  showPage('products');
+  setTimeout(()=>{const btn=document.getElementById('filter-'+cat);if(btn)filterProducts(cat,btn)},220);
+}
+function submitForm(){
+  const n=document.getElementById('f-name').value,e=document.getElementById('f-email').value;
+  if(!n||!e){alert('Proszę wypełnić imię/firmę i adres e-mail.');return}
+  document.getElementById('formFields').style.display='none';
+  document.getElementById('formSuccess').style.display='block';
+}
+function observeAnimations(){
+  const els=document.querySelectorAll('.page.active .anim-up,.page.active .anim-left');
+  const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  els.forEach(el=>{el.classList.remove('visible');obs.observe(el)});
+}
+window.addEventListener('scroll',()=>{
+  const scrolled=window.scrollY>40;
+  document.getElementById('mainNav').classList.toggle('scrolled',scrolled);
+  document.getElementById('scrollTopBtn').classList.toggle('show',window.scrollY>400);
+});
+const apg=document.getElementById('about-pg');
+function fixAboutGrid(){if(apg)apg.style.gridTemplateColumns=window.innerWidth<800?'1fr':'1fr 1fr'}
+window.addEventListener('resize',fixAboutGrid);
+fixAboutGrid();
+observeAnimations();
+document.fonts&&document.fonts.ready.then(observeAnimations);
+</script>
+</body>
+</html>
